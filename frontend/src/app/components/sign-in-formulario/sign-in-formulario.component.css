@@ -1,0 +1,167 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* centra verticalmente */
+  align-items: center;      /* centra horizontalmente */
+  min-height: 100%;        /* ocupa toda la altura de la pantalla */
+  padding: 1rem;            /* espacio para que no toque bordes */
+}
+
+
+form{
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.alert {
+  max-width: 340px;
+}
+
+label{
+  display: block;
+  margin-bottom: 8px;
+  margin-top: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="email"],
+input[type="password"]{
+  width: 100%;
+  padding: 10px;
+  max-width: 340px;
+  min-width: 340px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  display: block;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus{
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+input[type="checkbox"]{
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+label[for="privacyPolicy"]{
+  font-weight: normal;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+}
+
+label[for="privacyPolicy"] a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+label[for="privacyPolicy"] a:hover{
+  text-decoration: underline;
+}
+
+button[type="submit"]{
+  width: 100%;
+  padding: 12px;
+  max-width: 340px;
+  min-width: 340px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 26px;
+}
+
+button[type="submit"]:disabled {
+  background-color: #cccccc !important;
+  cursor: not-allowed;
+  transition: none !important; /* ✅ sin animación visual */
+}
+
+button[type="submit"]:hover{
+  background-color: #0056b3;
+}
+
+button[type="submit"]:disabled{
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+p{
+  text-align: center;
+  margin-top: 16px;
+}
+
+.privacy{
+  display: inline;
+}
+
+p a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+p a:hover{
+  text-decoration: underline;
+}
+
+.alert{
+  padding: 10px !important;
+}
+
+@media (max-width: 967px) {
+  section {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    width: 85vw;
+  }
+
+  .principal-image {
+    display: none; /* puedes poner display: block si la quieres debajo */
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    padding: 24px 12px;
+  }
+}
+
+/* 📱 Responsive para móvil */
+@media (max-width: 768px) {
+
+  button[type="submit"]{
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  input[type="email"],
+input[type="password"]{
+  width: 100%;
+  padding: 10px;
+  max-width: 100%;
+  min-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+  display: block;
+}
+
+  form{
+    padding: 0;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+}

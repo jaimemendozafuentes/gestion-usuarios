@@ -1,0 +1,16 @@
+<h1>Gestión de Usuarios</h1>
+
+<section class="auth-wrapper">
+  <div class="formulario animated-container">
+    <div *ngIf="showLogin" class="slide-in">
+      <app-sign-in-formulario (toggleForm)="toggleForm()"></app-sign-in-formulario>
+    </div>
+    <div *ngIf="!showLogin" class="slide-in">
+      <app-sign-up-formulario (toggleForm)="toggleForm()"></app-sign-up-formulario>
+    </div>
+  </div>
+
+  <div class="principal-image">
+    <img src="/assets/images/minimalista.jpg" alt="Decorative image" />
+  </div>
+</section>

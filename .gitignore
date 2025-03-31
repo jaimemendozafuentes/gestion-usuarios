@@ -1,0 +1,41 @@
+# === GLOBAL ===
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.*
+
+# === NODE / ANGULAR ===
+/node_modules/
+/dist/
+/.angular/
+/tmp/
+/out-tsc/
+/coverage/
+
+# === VSCODE ===
+.vscode/
+
+# === PHP / COMPOSER ===
+/vendor/
+/composer.lock
+
+# === BACKEND OUTPUT ===
+*.sql
+*.sqlite
+*.bak
+*.zip
+
+# === FRONTEND BUILD ===
+frontend/dist/
+frontend/.angular/
+
+# === IDEs ===
+.idea/
+*.swp
+*.swo
+
+# === OS / TEMP ===
+*.tmp
+*.temp
+*.bak

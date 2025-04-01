@@ -7,13 +7,13 @@ header("Access-Control-Allow-Origin: " . $_ENV['CORS_ORIGIN']);
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 
-//Manejo del preflight request (Angular envía un OPTIONS antes del POST)
+// 🟡 Preflight request (Angular envía un OPTIONS antes del POST)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   http_response_code(200);
   exit();
 }
 
-//Leer JSON enviado desde Angular
+// 📥 Leer JSON enviado desde Angular
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($data['email']) || !isset($data['password'])) {
@@ -25,7 +25,7 @@ if (!isset($data['email']) || !isset($data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
-// Verificar si ya existe el usuario
+// 🔍 Verificar si ya existe el usuario
 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
 $stmt->execute([$email]);
 
@@ -35,9 +35,20 @@ if ($stmt->fetch()) {
   exit;
 }
 
-// ✅ Insertar usuario
+// ✅ Insertar nuevo usuario
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 $stmt = $pdo->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
 $stmt->execute([$email, $hashedPassword]);
 
-echo json_encode(['success' => true, 'message' => 'Usuario registrado correctamente']);
+// 🔁 Recuperar datos del nuevo usuario
+$id = $pdo->lastInsertId();
+$stmt = $pdo->prepare("SELECT id, email, created_at FROM users WHERE id = ?");
+$stmt->execute([$id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// 🔚 Devolver respuesta
+echo json_encode([
+  'success' => true,
+  'message' => 'Usuario registrado correctamente',
+  'user' => $user
+]);

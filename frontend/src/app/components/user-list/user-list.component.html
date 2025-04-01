@@ -1,6 +1,10 @@
 <div *ngIf="cargando">Cargando usuarios...</div>
 <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
+<!-- ✅ Botón para crear nuevo usuario -->
+<button class="btn-nuevo" (click)="abrirNuevo()">➕ Nuevo usuario</button>
+
+
 <table *ngIf="!cargando && usuarios.length" class="user-table">
   <thead>
     <tr>
@@ -16,13 +20,30 @@
       <td>{{ user.email }}</td>
       <td>{{ user.created_at | date:'short' }}</td>
       <td>
+        <button class="btn-edit" (click)="editar(user)">Editar</button>
         <button class="btn-delete" (click)="eliminar(user.id)">Eliminar</button>
       </td>
     </tr>
   </tbody>
-
 </table>
 
 <div *ngIf="!cargando && usuarios.length === 0">
   No hay usuarios registrados.
 </div>
+
+<!-- ✅ Modal de edición -->
+<app-editar-usuario
+  *ngIf="mostrarModal && usuarioSeleccionado"
+  [id]="usuarioSeleccionado.id"
+  [email]="usuarioSeleccionado.email"
+  (actualizado)="actualizarUsuario($event)"
+  (cerrar)="cerrarModal()"
+/>
+
+<!-- ✅ Modal de creación -->
+<app-editar-usuario
+  *ngIf="nuevoVisible"
+  (creado)="crearUsuario($event)"
+  (cerrar)="nuevoVisible = false"
+/>
+

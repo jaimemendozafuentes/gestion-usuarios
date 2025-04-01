@@ -26,4 +26,18 @@ export class UsuarioService {
     return this.http.post<{ success: boolean; message: string }>(url, { id });
   }
 
+  editarUsuario(id: number, email: string) {
+    const url = `${environment.apiUrl}/users/update.php`;
+    return this.http.post<{ success: boolean; message: string }>(url, { id, email });
+  }
+
+  crearUsuario(email: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/users/register.php`, {
+      email,
+      password: 'Temporal123!' // 👉 Puedes cambiar esto más adelante
+    });
+  }
+
+
+
 }

@@ -3,17 +3,17 @@ require_once __DIR__ . '/../config/config.php'; // carga la conexión segura
 
 // 🔐 CORS (para desarrollo)
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: " . $_ENV['CORS_ORIGIN']);
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 
-// 🔄 Manejo del preflight request (Angular envía un OPTIONS antes del POST)
+//Manejo del preflight request (Angular envía un OPTIONS antes del POST)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   http_response_code(200);
   exit();
 }
 
-// 📨 Leer JSON enviado desde Angular
+//Leer JSON enviado desde Angular
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($data['email']) || !isset($data['password'])) {
@@ -25,7 +25,7 @@ if (!isset($data['email']) || !isset($data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
-// ❌ Verificar si ya existe el usuario
+// Verificar si ya existe el usuario
 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
 $stmt->execute([$email]);
 

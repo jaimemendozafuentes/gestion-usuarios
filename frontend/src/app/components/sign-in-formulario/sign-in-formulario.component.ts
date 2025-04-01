@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { SignInFormularioService } from '../../services/formulario/sign-in-formulario.service';
 
 @Component({
   selector: 'app-sign-in-formulario',
@@ -18,7 +18,10 @@ export class SignInFormularioComponent {
     password: new FormControl('', [Validators.required])
   });
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private signInService: SignInFormularioService,
+    private router: Router
+  ) {}
 
   @Output() toggleForm = new EventEmitter<void>();
 
@@ -36,23 +39,23 @@ export class SignInFormularioComponent {
 
   onLogin() {
     if (this.loginForm.valid) {
-      const datos = this.loginForm.value;
+      const datos = this.loginForm.value as { email: string; password: string };
 
-      this.http.post<any>('http://localhost/backend/users/login.php', datos)
-        .subscribe({
-          next: (res) => {
-            if (res.token) {
-              localStorage.setItem('token', res.token);
-              this.router.navigate(['/dashboard']);
-            } else {
-              alert(res.message || 'Login incorrecto');
-            }
-          },
-          error: (err) => {
-            console.error(err);
-            alert('Error en el servidor');
+      this.signInService.iniciarSesion(datos).subscribe({
+        next: (res) => {
+          if (res.success) {
+            localStorage.setItem('userId', res.userId);
+            alert('Login exitoso');
+            this.router.navigate(['/dashboard']);
+          } else {
+            alert(res.message || 'Credenciales incorrectas');
           }
-        });
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Error al conectar con el servidor');
+        }
+      });
     }
   }
 }

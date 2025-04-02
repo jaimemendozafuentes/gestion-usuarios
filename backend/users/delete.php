@@ -2,17 +2,20 @@
 require_once __DIR__ . '/../config/config.php';
 
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Origin: " . $_ENV['CORS_ORIGIN']);
 header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Authorization, Content-Type");
 
-// ✅ Manejo de solicitud preflight (CORS)
+// ✅ Preflight CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   http_response_code(200);
-  exit(0);
+  exit();
 }
 
-// ✅ Procesamiento del DELETE
+// ✅ Verificar token (después de headers)
+require_once __DIR__ . '/../middlewares/authenticate.php';
+
+// ✅ Recibir datos
 $data = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($data['id'])) {

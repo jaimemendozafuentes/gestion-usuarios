@@ -1,15 +1,17 @@
-import { CanActivateFn, Router } from '@angular/router';
+// auth.guard.ts
+import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from '../services/Auth/auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const userId = localStorage.getItem('userId');
+  const authService = inject(AuthService);
 
-  if (userId) {
-    return true; // ✅ Acceso permitido
+  if (authService.isAuthenticated()) {
+    return true;
   }
 
-  // 🚫 Si no hay usuario, redirige al login
+  // Si no está autenticado, redirige
   window.alert('Debes iniciar sesión para acceder');
   window.location.href = '/';
   return false;
 };
-

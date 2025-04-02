@@ -1,22 +1,24 @@
 <?php
-require_once __DIR__ . '/../config/config.php'; // carga la conexión segura
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../lib/jwt/src/JWT.php';
+require_once __DIR__ . '/../lib/jwt/src/Key.php';
 
-// 🔐 CORS (para desarrollo)
+use Firebase\JWT\JWT;
+
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: " . $_ENV['CORS_ORIGIN']);
-header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 
-// 🟡 Preflight request (Angular envía un OPTIONS antes del POST)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   http_response_code(200);
   exit();
 }
 
-// 📥 Leer JSON enviado desde Angular
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($data['email']) || !isset($data['password'])) {
+// Validación básica
+if (!isset($data['email'], $data['password'])) {
   http_response_code(400);
   echo json_encode(['error' => 'Email y contraseña son obligatorios']);
   exit;
@@ -25,7 +27,19 @@ if (!isset($data['email']) || !isset($data['password'])) {
 $email = $data['email'];
 $password = $data['password'];
 
-// 🔍 Verificar si ya existe el usuario
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  http_response_code(400);
+  echo json_encode(['error' => 'Formato de email no válido']);
+  exit;
+}
+
+if (strlen($password) < 8) {
+  http_response_code(400);
+  echo json_encode(['error' => 'La contraseña debe tener al menos 8 caracteres']);
+  exit;
+}
+
+// Comprobar si ya existe el usuario
 $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
 $stmt->execute([$email]);
 
@@ -35,20 +49,24 @@ if ($stmt->fetch()) {
   exit;
 }
 
-// ✅ Insertar nuevo usuario
+// Registrar usuario
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 $stmt = $pdo->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
 $stmt->execute([$email, $hashedPassword]);
+$userId = $pdo->lastInsertId();
 
-// 🔁 Recuperar datos del nuevo usuario
-$id = $pdo->lastInsertId();
-$stmt = $pdo->prepare("SELECT id, email, created_at FROM users WHERE id = ?");
-$stmt->execute([$id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+// Generar token
+$payload = [
+  'sub' => $userId,
+  'email' => $email,
+  'iat' => time(),
+  'exp' => time() + 3600
+];
+$token = JWT::encode($payload, $_ENV['JWT_SECRET'], 'HS256');
 
-// 🔚 Devolver respuesta
+// Devolver token
 echo json_encode([
   'success' => true,
   'message' => 'Usuario registrado correctamente',
-  'user' => $user
+  'token' => $token
 ]);

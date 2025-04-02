@@ -23,9 +23,6 @@
   animation: fadeIn 0.25s ease;
   display: flex;
   flex-direction: column;
-
-  scrollbar-width: thin;
-  scrollbar-color: #ccc transparent;
 }
 
 .modal::-webkit-scrollbar {

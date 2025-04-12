@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private loginUrl = `${environment.apiUrl}/users/login.php`;
+  private loginUrl = `${environment.apiUrl}/login.php`;
 
   constructor(private http: HttpClient) {}
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 
 interface Usuario {
   id: number;
@@ -13,7 +13,7 @@ interface Usuario {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = `${environment.apiUrl}/users/list.php`;
+  private apiUrl = `${environment.apiUrl}/list.php`;
 
   constructor(private http: HttpClient) {}
 
@@ -22,19 +22,19 @@ export class UsuarioService {
   }
 
   eliminarUsuario(id: number) {
-    const url = `${environment.apiUrl}/users/delete.php`;
+    const url = `${environment.apiUrl}/delete.php`;
     return this.http.post<{ success: boolean; message: string }>(url, { id });
   }
 
   editarUsuario(id: number, email: string) {
-    const url = `${environment.apiUrl}/users/update.php`;
+    const url = `${environment.apiUrl}/update.php`;
     return this.http.post<{ success: boolean; message: string }>(url, { id, email });
   }
 
   crearUsuario(email: string): Observable<any> {
-    return this.http.post(`${environment.apiUrl}/users/register.php`, {
+    return this.http.post(`${environment.apiUrl}/register.php`, {
       email,
-      password: 'Temporal123!' // 👉 Puedes cambiar esto más adelante
+      password: 'Temporal123!'
     });
   }
 

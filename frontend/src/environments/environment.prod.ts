@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://tudominio.com/backend' // para producción
+  apiUrl: process.env["NEXT_PUBLIC_API_URL"] || 'http://localhost:3000'
 };

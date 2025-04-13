@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://tudominio.com/backend' // para producción
+  apiUrl: 'https://gestion-usuarios-backend.fly.dev/'
 };

@@ -1,0 +1,80 @@
+<div class="form-container">
+  <!-- ✅ Mensaje de éxito -->
+  <div *ngIf="registroExitoso" class="alert alert-success">
+    ¡Usuario registrado correctamente!
+  </div>
+
+  <!-- ❌ Mensaje de error -->
+  <div *ngIf="errorRegistro" class="alert alert-danger">
+    {{ errorRegistro }}
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label for="emailAddress">Email Address</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      title="email"
+      placeholder="Email Address"
+    />
+    <div class="alert alert-danger" *ngIf="email?.invalid && email?.touched">
+      <span *ngIf="email?.errors?.['required']">
+        The email is required.
+      </span>
+      <span *ngIf="email?.errors?.['email']">
+        El email debe ser válido
+      </span>
+    </div>
+
+    <label for="securePassword">Password</label>
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      title="password"
+      placeholder="Password"
+    />
+    <div class="alert alert-danger" *ngIf="password?.invalid && password?.touched">
+      <span *ngIf="password?.errors?.['required']">
+        La contraseña es obligatoria.
+      </span>
+      <span *ngIf="password?.errors?.['minlength']">
+        La contraseña debe tener al menos 8 caracteres.
+      </span>
+      <span *ngIf="password?.errors?.['pattern']">
+        La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial.
+      </span>
+    </div>
+
+    <label for="securePasswordRepeat">Repeat Password</label>
+    <input
+      type="password"
+      id="passwordRepeat"
+      formControlName="passwordRepeat"
+      title="password Repeat"
+      placeholder="Repeat Password"
+    />
+    <div
+      class="alert alert-danger"
+      *ngIf="passwordsDontMatch && profileForm.get('passwordRepeat')?.touched"
+    >
+      ❌ Las contraseñas no coinciden.
+    </div>
+
+    <input
+      type="checkbox"
+      id="privacyPolicy"
+      formControlName="privacyPolicy"
+      title="Privacy Policy"
+    />
+    <p class="privacy">I accept the <a href="#">Privacy Policy</a></p>
+
+    <button type="submit" [disabled]="!profileForm.valid">Enviar</button>
+  </form>
+
+  <p>
+    Already have an account?
+    <a href="#" (click)="cambiar()">Sign In</a>
+  </p>
+</div>

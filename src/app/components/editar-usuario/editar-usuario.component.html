@@ -1,0 +1,30 @@
+<!-- FONDO OSCURO -->
+<div class="modal-backdrop" (click)="cerrarModal()"></div>
+
+<!-- MODAL -->
+<div class="modal" [class.hide]="ocultando" (click)="$event.stopPropagation()">
+
+  <!-- 👇 Título dinámico -->
+  <h2>{{ id !== undefined ? '✏️ Editar usuario' : '➕ Crear nuevo usuario' }}</h2>
+
+  <!-- Formulario -->
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email" placeholder="ejemplo@email.com" />
+
+    <!-- ⚠️ Validación -->
+    <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="error">
+      <span *ngIf="form.get('email')?.errors?.['required']">El email es obligatorio.</span>
+      <span *ngIf="form.get('email')?.errors?.['email']">Formato de email inválido.</span>
+    </div>
+
+    <!-- Botones -->
+    <div class="actions">
+      <button type="button" (click)="cerrarModal()">Cancelar</button>
+      <button type="submit" [disabled]="form.invalid">
+        {{ id !== undefined ? 'Guardar cambios' : 'Crear usuario' }}
+      </button>
+    </div>
+  </form>
+
+</div>

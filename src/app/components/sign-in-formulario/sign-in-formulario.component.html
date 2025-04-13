@@ -1,0 +1,36 @@
+<div class="form-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+
+    <!-- Campo Email -->
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      placeholder="Email"
+      title="Email"
+    />
+    <div class="alert alert-danger" *ngIf="email?.invalid && email?.touched">
+      <span *ngIf="email?.errors?.['required']">El email es obligatorio.</span>
+      <span *ngIf="email?.errors?.['email']">El formato del email no es válido.</span>
+    </div>
+
+    <!-- Campo Contraseña -->
+    <label for="password">Contraseña</label>
+    <input
+      type="password"
+      id="password"
+      formControlName="password"
+      placeholder="Contraseña"
+      title="Password"
+    />
+    <div class="alert alert-danger" *ngIf="password?.invalid && password?.touched">
+      <span *ngIf="password?.errors?.['required']">La contraseña es obligatoria.</span>
+    </div>
+
+    <!-- Botón -->
+    <button type="submit" [disabled]="!loginForm.valid">Iniciar sesión</button>
+  </form>
+
+  <p>¿No tienes cuenta? <a href="#" (click)="cambiar()">Regístrate</a></p>
+</div>

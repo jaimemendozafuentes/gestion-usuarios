@@ -1,0 +1,27 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>Mi Panel</h2>
+    <ul>
+      <li><a href="#">Inicio</a></li>
+      <li><a href="#">Usuarios</a></li>
+      <li><a href="#">Ajustes</a></li>
+      <li><button (click)="cerrarSesion()">Cerrar sesión</button></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <h3>Bienvenido, usuario</h3>
+    </header>
+
+    <section class="content">
+      <app-user-list></app-user-list>
+    </section>
+
+  </main>
+
+</div>

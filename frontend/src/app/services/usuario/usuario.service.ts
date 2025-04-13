@@ -34,7 +34,7 @@ export class UsuarioService {
   crearUsuario(email: string): Observable<any> {
     return this.http.post(`${environment.apiUrl}/register.php`, {
       email,
-      password: 'Temporal123!'
+      password: 'Temporal123!' // 👉 Puedes cambiar esto más adelante
     });
   }
 

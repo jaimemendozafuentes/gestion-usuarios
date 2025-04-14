@@ -21,6 +21,7 @@ export class UsuarioService {
     return this.http.get<{ success: boolean, users: Usuario[] }>(this.apiUrl);
   }
 
+
   eliminarUsuario(id: number) {
     const url = `${environment.apiUrl}/delete.php`;
     return this.http.post<{ success: boolean; message: string }>(url, { id });

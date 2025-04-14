@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
 })
 export class FormularioService {
 
-  private apiUrl = `${environment.apiUrl}/users/register.php`;
+  private apiUrl = `${environment.apiUrl}/register.php`;
 
   constructor(private http: HttpClient) {}
 
